@@ -13,16 +13,16 @@ public class GameController {
     private BattleshipTable table;
     private FleetManager fleet;
     private CoordinateParser coordinateParser;
+    private Scanner scanner;
 
     public GameController() {
         table = new BattleshipTable();
         fleet = new FleetManager();
         coordinateParser = new CoordinateParser();
+        scanner = new Scanner(System.in);
     }
 
     public void makeFleet() {
-        Scanner scanner = new Scanner(System.in);
-
         table.displayTable();
 
         for (Ship ship : fleet.getFleet()) {
@@ -49,7 +49,6 @@ public class GameController {
             }
             table.displayTable();
         }
-        scanner.close();
     }
 
     public void updateTableBuiltShip(Ship ship) {
@@ -91,27 +90,35 @@ public class GameController {
      * Adding shooting functionality
      */
 
-    private void takeAShot() {
-        Scanner scanner = new Scanner(System.in);
+    public void takeAShot() {
 
-        String line = scanner.next();
-        Point shootCoord = coordinateParser.parse(line);
+        boolean isValidShoot = false;
 
-        scanner.close();
+        while (!isValidShoot) {
+            try{
+                String line = scanner.nextLine();
+                Point shootCoord = coordinateParser.parse(line);
+                getShootState(shootCoord);
+                this.table.displayTable();
+                isValidShoot = true;
+            }catch (Exception e){
+                System.out.println("\n" + e.getMessage());
+            }
+        }
     }
 
-    private void getShootState(Point p){
-        if (isHit(p)){
-            System.out.println("You hit a ship!");
+    private void getShootState(Point p) {
+        if (isHit(p)) {
+            System.out.println("\n You hit a ship! \n");
             updateTableHit(p);
-        }else {
-            System.out.println("You missed!");
+        } else {
+            System.out.println("\n You missed! \n");
             updateTableMiss(p);
         }
     }
 
     private boolean isHit(Point p) {
-        return this.table.getSquare(p.getX(), p.getY()).equals(CellState.HIT);
+        return this.table.getSquare(p.getX(), p.getY()).equals(CellState.SHIP);
     }
 
     private void updateTableHit(Point p) {
@@ -122,4 +129,11 @@ public class GameController {
         this.table.updateTable(p.getX(), p.getY(), CellState.MISS);
     }
 
+    public BattleshipTable getTable() {
+        return this.table;
+    }
+
+    public FleetManager getFleet() {
+        return fleet;
+    }
 }
