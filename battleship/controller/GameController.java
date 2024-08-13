@@ -86,6 +86,19 @@ public class GameController {
         return false;
     }
 
+    /**
+     * Adding shooting functionality
+     */
+
+    private void startGame(){
+        System.out.println("The game starts!");
+        takeAShot();
+    }
+
+    private void takeAShot(){
+        System.out.println("Take a shot! ");
+    }
+
     public BattleshipTable getBattleshipTable() {
         return this.table;
     }

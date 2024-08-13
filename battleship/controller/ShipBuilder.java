@@ -6,13 +6,17 @@ import java.util.ArrayList;
 
 public class ShipBuilder {
 
-    private final String rowIndex = "ABCDEFGHIJ";
+    private final CoordinateParser coordinateParser;
+
+    public ShipBuilder() {
+        this.coordinateParser = new CoordinateParser();
+    }
 
     public Ship buildShip(String line, Ship ship) {
         String[] lineArray = prepareCoords(line);
 
-        Point start = getPointCoord(lineArray[0]);
-        Point end = getPointCoord(lineArray[1]);
+        Point start = coordinateParser.parse(lineArray[0]);
+        Point end = coordinateParser.parse(lineArray[1]);
 
         if (isValidToBuild(start, end, ship)) {
             ArrayList<Point> positions = buildPositions(start, end);
@@ -30,40 +34,6 @@ public class ShipBuilder {
         return line.split(" ");
     }
 
-    public Point getPointCoord(String coord) {
-        int coordX = getIntRow(String.valueOf(coord.charAt(0)));
-        int coordY = getIntCol(coord.substring(1));
-
-        return new Point(coordX, coordY);
-    }
-
-    private int getIntRow(String row) {
-        if (!isValidRow(row)) {
-            throw new IllegalArgumentException("Error! Invalid row.");
-        }
-        return rowIndex.indexOf(row);
-    }
-
-    private boolean isValidRow(String row) {
-        return rowIndex.contains(row);
-    }
-
-    private int getIntCol(String col) {
-        try {
-            if (!isValidCol(col)) {
-                throw new IllegalArgumentException("Error! Invalid column.");
-            }
-            return Integer.parseInt(col) - 1;
-        } catch (NumberFormatException e) {
-            throw new NumberFormatException("Error! Invalid column format.");
-        }
-    }
-
-    private boolean isValidCol(String col) {
-        int colInt = Integer.parseInt(col);
-        return colInt >= 1 && colInt <= 10;
-    }
-
     private boolean isValidToBuild(Point start, Point end, Ship ship) {
         boolean validPlace = (start.getX() == end.getX()) || (start.getY() == end.getY());
         boolean isValidLength = (Point.distanceOfTwoPoints(start, end) + 1) == ship.getLength();
@@ -78,6 +48,7 @@ public class ShipBuilder {
 
         return validPlace && isValidLength;
     }
+
     private ArrayList<Point> buildPositions(Point start, Point end) {
         ArrayList<Point> positions = new ArrayList<>();
 
