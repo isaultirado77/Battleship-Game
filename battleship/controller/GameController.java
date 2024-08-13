@@ -9,14 +9,15 @@ import battleship.model.ship.Ship;
 
 public class GameController {
 
-    private final String rowIndex = "ABCDEFGHIJ";
 
     private BattleshipTable table;
     private FleetManager fleet;
+    private CoordinateParser coordinateParser;
 
     public GameController() {
         table = new BattleshipTable();
         fleet = new FleetManager();
+        coordinateParser = new CoordinateParser();
     }
 
     public void makeFleet() {
@@ -90,20 +91,35 @@ public class GameController {
      * Adding shooting functionality
      */
 
-    private void startGame(){
-        System.out.println("The game starts!");
-        takeAShot();
+    private void takeAShot() {
+        Scanner scanner = new Scanner(System.in);
+
+        String line = scanner.next();
+        Point shootCoord = coordinateParser.parse(line);
+
+        scanner.close();
     }
 
-    private void takeAShot(){
-        System.out.println("Take a shot! ");
+    private void getShootState(Point p){
+        if (isHit(p)){
+            System.out.println("You hit a ship!");
+            updateTableHit(p);
+        }else {
+            System.out.println("You missed!");
+            updateTableMiss(p);
+        }
     }
 
-    public BattleshipTable getBattleshipTable() {
-        return this.table;
+    private boolean isHit(Point p) {
+        return this.table.getSquare(p.getX(), p.getY()).equals(CellState.HIT);
     }
 
-    public FleetManager getFleet() {
-        return this.fleet;
+    private void updateTableHit(Point p) {
+        this.table.updateTable(p.getX(), p.getY(), CellState.HIT);
     }
+
+    private void updateTableMiss(Point p) {
+        this.table.updateTable(p.getX(), p.getY(), CellState.MISS);
+    }
+
 }
