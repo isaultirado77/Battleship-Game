@@ -15,7 +15,6 @@ public class Main {
         gameController.getTable().displayTable();
         System.out.println("\n Take a shot! \n");
         gameController.takeAShot();
-
     }
 }
 
