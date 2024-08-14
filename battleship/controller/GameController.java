@@ -11,12 +11,14 @@ public class GameController {
 
 
     private BattleshipTable table;
+    private BattleshipTable gameTable;
     private FleetManager fleet;
     private CoordinateParser coordinateParser;
     private Scanner scanner;
 
     public GameController() {
         table = new BattleshipTable();
+        gameTable = new BattleshipTable();
         fleet = new FleetManager();
         coordinateParser = new CoordinateParser();
         scanner = new Scanner(System.in);
@@ -86,10 +88,6 @@ public class GameController {
         return false;
     }
 
-    /**
-     * Adding shooting functionality
-     */
-
     public void takeAShot() {
 
         boolean isValidShoot = false;
@@ -101,16 +99,19 @@ public class GameController {
                 getShootState(shootCoord);
                 this.table.displayTable();
                 isValidShoot = true;
+
             }catch (Exception e){
-                System.out.println("\n" + e.getMessage());
+                System.out.println("\n" + e.getMessage() + "\n");
             }
         }
     }
 
     private void getShootState(Point p) {
         if (isHit(p)) {
-            System.out.println("\n You hit a ship! \n");
             updateTableHit(p);
+            this.getGameTable().displayTable();
+            System.out.println("\n You hit a ship! \n");
+
         } else {
             System.out.println("\n You missed! \n");
             updateTableMiss(p);
@@ -123,17 +124,19 @@ public class GameController {
 
     private void updateTableHit(Point p) {
         this.table.updateTable(p.getX(), p.getY(), CellState.HIT);
+        this.gameTable.updateTable(p.getX(), p.getY(), CellState.HIT);
     }
 
     private void updateTableMiss(Point p) {
         this.table.updateTable(p.getX(), p.getY(), CellState.MISS);
+        this.gameTable.updateTable(p.getX(), p.getY(), CellState.MISS);
     }
 
     public BattleshipTable getTable() {
         return this.table;
     }
 
-    public FleetManager getFleet() {
-        return fleet;
+    public BattleshipTable getGameTable(){
+        return this.gameTable;
     }
 }
