@@ -1,5 +1,7 @@
 package battleship.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import battleship.model.table.BattleshipTable;
@@ -22,6 +24,25 @@ public class GameController {
         fleet = new FleetManager();
         coordinateParser = new CoordinateParser();
         scanner = new Scanner(System.in);
+    }
+
+    public void start(){
+
+        System.out.println("\n The game starts! \n");
+        this.table.displayTable();
+        System.out.println("\n Take a shot! \n");
+
+        while(true){
+            takeAShot();
+            if (isShipSunk()){
+                System.out.println("You sank a ship!");
+            }
+            if (isFleetSank()){
+                System.out.println("\n You sank the last ship. You won.");
+                break;
+            }
+        }
+
     }
 
     public void makeFleet() {
@@ -93,14 +114,12 @@ public class GameController {
         boolean isValidShoot = false;
 
         while (!isValidShoot) {
-            try{
+            try {
                 String line = scanner.nextLine();
                 Point shootCoord = coordinateParser.parse(line);
                 getShootState(shootCoord);
-                this.table.displayTable();
                 isValidShoot = true;
-
-            }catch (Exception e){
+            } catch (Exception e) {
                 System.out.println("\n" + e.getMessage() + "\n");
             }
         }
@@ -113,8 +132,9 @@ public class GameController {
             System.out.println("\n You hit a ship! \n");
 
         } else {
-            System.out.println("\n You missed! \n");
             updateTableMiss(p);
+            this.getGameTable().displayTable();
+            System.out.println("\n You missed! Try again:\n");
         }
     }
 
@@ -123,20 +143,50 @@ public class GameController {
     }
 
     private void updateTableHit(Point p) {
-        this.table.updateTable(p.getX(), p.getY(), CellState.HIT);
         this.gameTable.updateTable(p.getX(), p.getY(), CellState.HIT);
     }
 
     private void updateTableMiss(Point p) {
-        this.table.updateTable(p.getX(), p.getY(), CellState.MISS);
         this.gameTable.updateTable(p.getX(), p.getY(), CellState.MISS);
+    }
+
+    private boolean isShipSunk() {
+        Ship shipToRemove = null;
+
+        for (Ship ship : fleet.getFleet()) {
+            int hitCount = 0;
+            for (Point p : ship.getPositions()) {
+                if (this.getGameTable().getSquare(p.getX(), p.getY()) == CellState.HIT) {
+                    hitCount++;
+                }
+            }
+            if (hitCount == ship.getLength()) {
+                shipToRemove = ship;
+                break;
+            }
+        }
+
+        if (shipToRemove != null) {
+            dropAShip(shipToRemove);
+            return true;
+        }
+
+        return false;
+    }
+
+    private void dropAShip(Ship ship) {
+        this.fleet.getFleet().remove(ship);
+    }
+
+    private boolean isFleetSank(){
+        return this.fleet.getFleet().isEmpty();
     }
 
     public BattleshipTable getTable() {
         return this.table;
     }
 
-    public BattleshipTable getGameTable(){
+    public BattleshipTable getGameTable() {
         return this.gameTable;
     }
 }

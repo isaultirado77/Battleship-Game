@@ -18,20 +18,13 @@ public class FleetManager {
         fleet.add(new Destroyer());
     }
 
-
-
     public List<Ship> getFleet() {
         return fleet;
     }
-
 
     public void placeShip(Ship ship, List<Point> positions) {
         ship.setPositions(positions);
     }
 
-    public boolean allShipsSunk() {
-        // Writte implementation
-        return true;
-    }
 }
 
