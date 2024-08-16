@@ -94,7 +94,6 @@ public class GameController {
         }
     }
 
-
     private void getShootState(Point p) {
         if (isHit(p)) {
             updateTableHit(p);
