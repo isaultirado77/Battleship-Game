@@ -72,26 +72,28 @@ public class GameController {
 
         while (!isValidShoot) {
             try {
-                System.out.print("> ");
                 String line = scanner.nextLine();
                 Point shootCoord = coordinateParser.parse(line);
                 getShootState(shootCoord);
                 isValidShoot = true;
 
                 if (isShipSunk(shootCoord)) {
-                    System.out.println("You sank a ship! Specify a new target:");
+                    System.out.println("\nYou sank a ship! Specify a new target:\n");
+                    handleShipSinking(shootCoord);
                 } else if (isHit(shootCoord)) {
-                    System.out.println("You hit a ship! Try again:");
+                    System.out.println("\nYou hit a ship! Try again:\n");
                 } else {
-                    System.out.println("You missed. Try again:");
+                    System.out.println("\nYou missed. Try again:\n");
                 }
 
                 gameTable.displayTable();
+                System.out.println();
             } catch (Exception e) {
                 System.out.println("\n" + e.getMessage() + "\n");
             }
         }
     }
+
 
     private void getShootState(Point p) {
         if (isHit(p)) {
@@ -106,28 +108,41 @@ public class GameController {
     }
 
     private void updateTableHit(Point p) {
-        table.updateTable(p.getX(), p.getY(), CellState.HIT);
         gameTable.updateTable(p.getX(), p.getY(), CellState.HIT);
     }
 
     private void updateTableMiss(Point p) {
-        table.updateTable(p.getX(), p.getY(), CellState.MISS);
         gameTable.updateTable(p.getX(), p.getY(), CellState.MISS);
     }
 
     private boolean isShipSunk(Point p) {
         for (Ship ship : fleet.getFleet()) {
             if (ship.getPositions().contains(p)) {
-                boolean isSunk = ship.getPositions().stream()
-                        .allMatch(pos -> table.getSquare(pos.getX(), pos.getY()) == CellState.HIT);
+                boolean isSunk = isCurrentShipSunk(ship, gameTable);
                 if (isSunk) {
-                    fleet.getFleet().remove(ship);
                     return true;
                 }
-                break;
             }
         }
         return false;
+    }
+
+    private boolean isCurrentShipSunk(Ship ship, BattleshipTable table) {
+        for (Point pos : ship.getPositions()) {
+            if (table.getSquare(pos.getX(), pos.getY()) != CellState.HIT) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void handleShipSinking(Point p) {
+        for (Ship ship : fleet.getFleet()) {
+            if (ship.getPositions().contains(p)) {
+                fleet.getFleet().remove(ship);
+                return;
+            }
+        }
     }
 
     private boolean isFleetSunk() {
