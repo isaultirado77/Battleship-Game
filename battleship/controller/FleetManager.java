@@ -25,6 +25,6 @@ public class FleetManager {
     public void placeShip(Ship ship, List<Point> positions) {
         ship.setPositions(positions);
     }
-
+    
 }
 
