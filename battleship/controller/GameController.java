@@ -52,102 +52,6 @@ public class GameController {
         }
     }
 
-    public void start() {
-        System.out.println("\nThe game starts!\n");
-        gameTable.displayTable();
-        System.out.println("\nTake a shot!\n");
-
-        while (true) {
-            takeAShot();
-
-            if (isFleetSunk()) {
-                System.out.println("\nYou sank the last ship. You won. Congratulations!");
-                break;
-            }
-        }
-    }
-
-    public void takeAShot() {
-        boolean isValidShoot = false;
-
-        while (!isValidShoot) {
-            try {
-                String line = scanner.nextLine();
-                Point shootCoord = coordinateParser.parse(line);
-                getShootState(shootCoord);
-                isValidShoot = true;
-
-                if (isShipSunk(shootCoord)) {
-                    System.out.println("\nYou sank a ship! Specify a new target:\n");
-                    handleShipSinking(shootCoord);
-                } else if (isHit(shootCoord)) {
-                    System.out.println("\nYou hit a ship! Try again:\n");
-                } else {
-                    System.out.println("\nYou missed. Try again:\n");
-                }
-
-                gameTable.displayTable();
-                System.out.println();
-            } catch (Exception e) {
-                System.out.println("\n" + e.getMessage() + "\n");
-            }
-        }
-    }
-
-    private void getShootState(Point p) {
-        if (isHit(p)) {
-            updateTableHit(p);
-        } else {
-            updateTableMiss(p);
-        }
-    }
-
-    private boolean isHit(Point p) {
-        return table.getSquare(p.getX(), p.getY()).equals(CellState.SHIP);
-    }
-
-    private void updateTableHit(Point p) {
-        gameTable.updateTable(p.getX(), p.getY(), CellState.HIT);
-    }
-
-    private void updateTableMiss(Point p) {
-        gameTable.updateTable(p.getX(), p.getY(), CellState.MISS);
-    }
-
-    private boolean isShipSunk(Point p) {
-        for (Ship ship : fleet.getFleet()) {
-            if (ship.getPositions().contains(p)) {
-                boolean isSunk = isCurrentShipSunk(ship, gameTable);
-                if (isSunk) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    private boolean isCurrentShipSunk(Ship ship, BattleshipTable table) {
-        for (Point pos : ship.getPositions()) {
-            if (table.getSquare(pos.getX(), pos.getY()) != CellState.HIT) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private void handleShipSinking(Point p) {
-        for (Ship ship : fleet.getFleet()) {
-            if (ship.getPositions().contains(p)) {
-                fleet.getFleet().remove(ship);
-                return;
-            }
-        }
-    }
-
-    private boolean isFleetSunk() {
-        return fleet.getFleet().isEmpty();
-    }
-
     public void updateTableBuiltShip(Ship ship) {
         for (Point point : ship.getPositions()) {
             table.updateTable(point.getX(), point.getY(), CellState.SHIP);
@@ -181,5 +85,57 @@ public class GameController {
             }
         }
         return false;
+    }
+
+    public void takeAShot() {
+
+        boolean isValidShoot = false;
+
+        while (!isValidShoot) {
+            try{
+                String line = scanner.nextLine();
+                Point shootCoord = coordinateParser.parse(line);
+                getShootState(shootCoord);
+                this.table.displayTable();
+                isValidShoot = true;
+
+            }catch (Exception e){
+                System.out.println("\n" + e.getMessage() + "\n");
+            }
+        }
+    }
+
+    private void getShootState(Point p) {
+        if (isHit(p)) {
+            updateTableHit(p);
+            this.getGameTable().displayTable();
+            System.out.println("\n You hit a ship! \n");
+
+        } else {
+            System.out.println("\n You missed! \n");
+            updateTableMiss(p);
+        }
+    }
+
+    private boolean isHit(Point p) {
+        return this.table.getSquare(p.getX(), p.getY()).equals(CellState.SHIP);
+    }
+
+    private void updateTableHit(Point p) {
+        this.table.updateTable(p.getX(), p.getY(), CellState.HIT);
+        this.gameTable.updateTable(p.getX(), p.getY(), CellState.HIT);
+    }
+
+    private void updateTableMiss(Point p) {
+        this.table.updateTable(p.getX(), p.getY(), CellState.MISS);
+        this.gameTable.updateTable(p.getX(), p.getY(), CellState.MISS);
+    }
+
+    public BattleshipTable getTable() {
+        return this.table;
+    }
+
+    public BattleshipTable getGameTable(){
+        return this.gameTable;
     }
 }
