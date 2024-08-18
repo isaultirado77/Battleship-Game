@@ -42,9 +42,6 @@ public abstract class Ship {
     }
 
     public boolean isSunk(){
-        /*
-        Writte implementation
-         */
-        return false;
+        return this.positions.isEmpty();
     }
 }

@@ -64,4 +64,26 @@ public class BattleshipTable implements Table {
     public void resetTable() {
         initializeTable();
     }
+
+    public boolean isAdjacentCellOccupied(Point point) {
+        int[][] directions = {
+                {-1, -1}, {-1, 0}, {-1, 1},
+                {0, -1}, {0, 0}, {0, 1},
+                {1, -1}, {1, 0}, {1, 1}
+        };
+
+        for (int[] dir : directions) {
+            int newRow = point.getX() + dir[0];
+            int newCol = point.getY() + dir[1];
+
+            if (newRow >= 0 && newRow < ROWS && newCol >= 0 && newCol < COLUMNS) {
+                if (getSquare(newRow, newCol) == CellState.SHIP) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+
 }
