@@ -82,7 +82,7 @@ public class GameEngine {
     }
 
     public int getCurrentPlayer() {
-        return isPlayer1Turn ? 1 : 2;
+        return 0;
     }
 
     public int getOpponent() {
@@ -152,5 +152,9 @@ public class GameEngine {
 
     private boolean isHit(Point shootCoord, BattleshipTable opponentTable) {
         return opponentTable.getSquare(shootCoord.getX(), shootCoord.getY()) == CellState.HIT;
+    }
+
+    public boolean isFleetSunk(int opponent) {
+        return getPlayerFleet(opponent).getFleet().isEmpty();
     }
 }
