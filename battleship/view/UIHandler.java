@@ -1,7 +1,5 @@
 package battleship.view;
 
-import battleship.model.table.BattleshipTable;
-import battleship.model.table.Point;
 import battleship.model.ship.Ship;
 
 import java.util.Scanner;

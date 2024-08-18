@@ -3,6 +3,7 @@ package battleship.controller;
 
 import java.util.List;
 import java.util.ArrayList;
+
 import battleship.model.ship.*;
 import battleship.model.table.Point;
 

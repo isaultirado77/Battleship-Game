@@ -1,9 +1,5 @@
 package battleship.controller;
 
-import battleship.model.ship.Ship;
-import battleship.model.table.Point;
-import battleship.model.table.BattleshipTable;
-import battleship.model.table.CellState;
 import battleship.view.UIHandler;
 
 public class GameController {
