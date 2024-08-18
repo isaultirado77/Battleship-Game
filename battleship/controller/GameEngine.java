@@ -13,19 +13,25 @@ public class GameEngine {
 
     private BattleshipTable player1Table;
     private BattleshipTable player2Table;
+    private BattleshipTable player1FogTable;
+    private BattleshipTable player2FogTable;
     private FleetManager player1Fleet;
     private FleetManager player2Fleet;
     private UIHandler uiHandler;
+    private CoordinateParser coordinateParser;
     private boolean isPlayer1Turn;
     private final Scanner scanner;
 
     public GameEngine() {
         player1Table = new BattleshipTable();
         player2Table = new BattleshipTable();
+        player1FogTable = new BattleshipTable();
+        player2FogTable = new BattleshipTable();
         player1Fleet = new FleetManager();
         player2Fleet = new FleetManager();
         scanner = new Scanner(System.in);
         uiHandler = new UIHandler(scanner);
+        coordinateParser = new CoordinateParser();
         isPlayer1Turn = true;
     }
 
@@ -36,6 +42,7 @@ public class GameEngine {
         table.displayTable();
         for (Ship ship : fleet.getFleet()) {
             boolean shipPlaced = false;
+            System.out.println("\nEnter the coordinates of the " + ship.shipInfo() + ":\n");
             while (!shipPlaced) {
                 try {
                     String line = uiHandler.getInputCoordinates(ship);
@@ -43,9 +50,8 @@ public class GameEngine {
                     Ship auxShip = shipBuilder.buildShip(line, ship);
 
                     if (isShipTooClose(auxShip, table)) {
-                        throw new IllegalArgumentException("Error! You placed it too close to another one.");
+                        throw new IllegalArgumentException("\nError! You placed it too close to another one.");
                     }
-
                     fleet.placeShip(auxShip, auxShip.getPositions());
                     updateTableBuiltShip(auxShip, table);
                     shipPlaced = true;
@@ -53,25 +59,48 @@ public class GameEngine {
                     uiHandler.displayError(e.getMessage());
                 }
             }
+            System.out.println();
             table.displayTable();
         }
     }
 
-    public void takeAShot(Point shootCoord) {
+    public void takeAShot() {
+        boolean isValidShoot = false;
         BattleshipTable currentPlayerTable = getCurrentPlayerTable();
+        BattleshipTable currentPlayerFogTable = getCurrentPlayerFogTable();
         BattleshipTable opponentTable = getOpponentTable();
+        FleetManager opponentFleet = getOpponentFleet();
 
-        getShootState(shootCoord, opponentTable, currentPlayerTable);
+        while (!isValidShoot) {
+            try {
+                String line = scanner.nextLine();
+                Point shootCoord = coordinateParser.parse(line);
 
-        if (isShipSunk(shootCoord, getOpponentFleet(), currentPlayerTable)) {
-            uiHandler.displayShipSunk();
-            handleShipSinking(shootCoord, getOpponentFleet());
-        } else if (isHit(shootCoord, opponentTable)) {
-            uiHandler.displayHit();
-        } else {
-            uiHandler.displayMiss();
+                boolean hit = isHit(shootCoord, opponentTable);
+
+                getShootState(shootCoord, opponentTable, currentPlayerTable, currentPlayerFogTable);
+                if(line.equalsIgnoreCase("D1")){
+                    System.out.println(isShipSunk(shootCoord, opponentFleet, opponentTable));
+                    opponentTable.displayTable();
+                }
+                if (hit) {
+                    if (isShipSunk(shootCoord, opponentFleet, opponentTable)) {
+                        uiHandler.displayShipSunk();
+                        handleShipSinking(shootCoord, opponentFleet);
+                    } else {
+                        uiHandler.displayHit();
+                    }
+                } else {
+                    uiHandler.displayMiss();
+                }
+
+                isValidShoot = true;
+            } catch (Exception e) {
+                uiHandler.displayError(e.getMessage());
+            }
         }
     }
+
 
     public boolean isGameOver() {
         return player1Fleet.getFleet().isEmpty() || player2Fleet.getFleet().isEmpty();
@@ -82,7 +111,7 @@ public class GameEngine {
     }
 
     public int getCurrentPlayer() {
-        return 0;
+        return isPlayer1Turn ? 1 : 2;
     }
 
     public int getOpponent() {
@@ -97,8 +126,12 @@ public class GameEngine {
         return playerNumber == 1 ? player1Fleet : player2Fleet;
     }
 
-    private BattleshipTable getCurrentPlayerTable() {
+    public BattleshipTable getCurrentPlayerTable() {
         return isPlayer1Turn ? player1Table : player2Table;
+    }
+
+    public BattleshipTable getCurrentPlayerFogTable() {
+        return isPlayer1Turn ? player1FogTable : player2FogTable;
     }
 
     private BattleshipTable getOpponentTable() {
@@ -120,13 +153,15 @@ public class GameEngine {
         }
     }
 
-    private void getShootState(Point shootCoord, BattleshipTable opponentTable, BattleshipTable currentPlayerTable) {
-        if (opponentTable.getSquare(shootCoord.getY(), shootCoord.getY()) == CellState.SHIP) {
-            opponentTable.updateTable(shootCoord.getX(), shootCoord.getY(), CellState.HIT);
+    private void getShootState(Point shootCoord, BattleshipTable opponentTable, BattleshipTable currentPlayerTable, BattleshipTable currentPlayerFogTable) {
+        if (isHit(shootCoord, opponentTable)) {
             currentPlayerTable.updateTable(shootCoord.getX(), shootCoord.getY(), CellState.HIT);
+            currentPlayerFogTable.updateTable(shootCoord.getX(), shootCoord.getY(), CellState.HIT);
+            opponentTable.updateTable(shootCoord.getX(), shootCoord.getY(), CellState.HIT);
         } else {
             opponentTable.updateTable(shootCoord.getX(), shootCoord.getY(), CellState.MISS);
             currentPlayerTable.updateTable(shootCoord.getX(), shootCoord.getY(), CellState.MISS);
+            currentPlayerFogTable.updateTable(shootCoord.getX(), shootCoord.getY(), CellState.MISS);
         }
     }
 
@@ -140,9 +175,27 @@ public class GameEngine {
         return false;
     }
 
-    private boolean isShipSunk(Point shootCoord, FleetManager opponentFleet, BattleshipTable currentPlayerTable) {
-        Ship hitShip = opponentFleet.getShipAtPosition(shootCoord);
-        return hitShip != null && hitShip.isSunk();
+    private boolean isShipSunk(Point shootCoord, FleetManager opponentFleet, BattleshipTable opponentTable) {
+        for (Ship ship : opponentFleet.getFleet()) {
+            System.out.println(ship.getPositions().contains(shootCoord));
+            if (ship.getPositions().contains(shootCoord)) {
+                boolean isSunk = isCurrentShipSunk(ship, opponentTable);
+                if (isSunk) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean isCurrentShipSunk(Ship ship, BattleshipTable table) {
+        int countHit = 0;
+        for (Point pos : ship.getPositions()) {
+            if (table.getSquare(pos.getX(), pos.getY()) == CellState.HIT) {
+                countHit++;
+            }
+        }
+        return countHit == ship.getLength();
     }
 
     private void handleShipSinking(Point shootCoord, FleetManager opponentFleet) {
@@ -151,7 +204,7 @@ public class GameEngine {
     }
 
     private boolean isHit(Point shootCoord, BattleshipTable opponentTable) {
-        return opponentTable.getSquare(shootCoord.getX(), shootCoord.getY()) == CellState.HIT;
+        return opponentTable.getSquare(shootCoord.getX(), shootCoord.getY()) == CellState.SHIP;
     }
 
     public boolean isFleetSunk(int opponent) {

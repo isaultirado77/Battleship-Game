@@ -22,9 +22,9 @@ public class GameController {
         uiHandler.switchPlayer();
 
         while (!gameEngine.isGameOver()) {
+            uiHandler.displayUserTables(gameEngine.getCurrentPlayerTable(), gameEngine.getCurrentPlayerFogTable());
             uiHandler.displayGameState(gameEngine.getCurrentPlayer());
-            uiHandler.promptPlayerToShoot(gameEngine.getCurrentPlayer());
-
+            gameEngine.takeAShot();
             if (gameEngine.isFleetSunk(gameEngine.getOpponent())) {
                 uiHandler.displayWinner(gameEngine.getCurrentPlayer());
                 break;
