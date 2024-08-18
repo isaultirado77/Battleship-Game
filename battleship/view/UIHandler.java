@@ -55,7 +55,7 @@ public class UIHandler {
     }
 
     public void displayWinner(int playerNumber) {
-        System.out.println("Player " + playerNumber + " won. Congratulations!");
+        System.out.println("\nYou sank the last ship. You won. Congratulations!");
     }
 
     public void displayGameState(int playerNumber) {

@@ -80,6 +80,10 @@ public class GameEngine {
 
                 getShootState(shootCoord, opponentTable, currentPlayerTable, currentPlayerFogTable);
 
+                if (isGameOver()){
+                    return;
+                }
+
                 if (hit) {
                     if (isShipSunk(shootCoord, opponentFleet, opponentTable)) {
                         uiHandler.displayShipSunk();
@@ -153,16 +157,21 @@ public class GameEngine {
     }
 
     private void getShootState(Point shootCoord, BattleshipTable opponentTable, BattleshipTable currentPlayerTable, BattleshipTable currentPlayerFogTable) {
+        CellState currentState = opponentTable.getSquare(shootCoord.getX(), shootCoord.getY());
+
+        if (currentState == CellState.HIT) {
+            return;
+        }
+
         if (isHit(shootCoord, opponentTable)) {
-            currentPlayerTable.updateTable(shootCoord.getX(), shootCoord.getY(), CellState.HIT);
             currentPlayerFogTable.updateTable(shootCoord.getX(), shootCoord.getY(), CellState.HIT);
             opponentTable.updateTable(shootCoord.getX(), shootCoord.getY(), CellState.HIT);
         } else {
-            opponentTable.updateTable(shootCoord.getX(), shootCoord.getY(), CellState.MISS);
-            currentPlayerTable.updateTable(shootCoord.getX(), shootCoord.getY(), CellState.MISS);
             currentPlayerFogTable.updateTable(shootCoord.getX(), shootCoord.getY(), CellState.MISS);
+            opponentTable.updateTable(shootCoord.getX(), shootCoord.getY(), CellState.MISS);
         }
     }
+
 
 
     private boolean isShipTooClose(Ship ship, BattleshipTable table) {
