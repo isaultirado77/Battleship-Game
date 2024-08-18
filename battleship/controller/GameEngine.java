@@ -79,10 +79,7 @@ public class GameEngine {
                 boolean hit = isHit(shootCoord, opponentTable);
 
                 getShootState(shootCoord, opponentTable, currentPlayerTable, currentPlayerFogTable);
-                if(line.equalsIgnoreCase("D1")){
-                    System.out.println(isShipSunk(shootCoord, opponentFleet, opponentTable));
-                    opponentTable.displayTable();
-                }
+
                 if (hit) {
                     if (isShipSunk(shootCoord, opponentFleet, opponentTable)) {
                         uiHandler.displayShipSunk();
@@ -93,6 +90,8 @@ public class GameEngine {
                 } else {
                     uiHandler.displayMiss();
                 }
+
+
 
                 isValidShoot = true;
             } catch (Exception e) {
@@ -177,7 +176,6 @@ public class GameEngine {
 
     private boolean isShipSunk(Point shootCoord, FleetManager opponentFleet, BattleshipTable opponentTable) {
         for (Ship ship : opponentFleet.getFleet()) {
-            System.out.println(ship.getPositions().contains(shootCoord));
             if (ship.getPositions().contains(shootCoord)) {
                 boolean isSunk = isCurrentShipSunk(ship, opponentTable);
                 if (isSunk) {
@@ -198,9 +196,13 @@ public class GameEngine {
         return countHit == ship.getLength();
     }
 
-    private void handleShipSinking(Point shootCoord, FleetManager opponentFleet) {
-        Ship sunkShip = opponentFleet.getShipAtPosition(shootCoord);
-        opponentFleet.removeShip(sunkShip);
+    private void handleShipSinking(Point p, FleetManager opponentFleet) {
+        for (Ship ship : opponentFleet.getFleet()) {
+            if (ship.getPositions().contains(p)) {
+                opponentFleet.getFleet().remove(ship);
+                return;
+            }
+        }
     }
 
     private boolean isHit(Point shootCoord, BattleshipTable opponentTable) {
