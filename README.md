@@ -1,5 +1,9 @@
 # Battleship-Game
 
+<div align="center">
+    <img src="https://www.hasbro.com/common/productimages/es_LAM/54D1C85ECFBE46259A9E53C36F4D136C/51b6f589a1a02e5f8afa01b73c19a85ee9de6557.jpg" alt="Battleship Game" />
+</div>
+
 ## Project Description 
 This project is an implementation of the Battleship game, designed to be played in the console. It allows two players to place their ships on a board and take turns trying to sink the enemy fleet. The application is developed following object-oriented design principles.
 
