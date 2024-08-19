@@ -1,7 +1,7 @@
 # Battleship-Game
 
 <div align="center">
-    <img src="https://www.hasbro.com/common/productimages/es_LAM/54D1C85ECFBE46259A9E53C36F4D136C/51b6f589a1a02e5f8afa01b73c19a85ee9de6557.jpg" alt="Battleship Game" />
+    <img src="https://www.hasbro.com/common/productimages/es_LAM/54D1C85ECFBE46259A9E53C36F4D136C/51b6f589a1a02e5f8afa01b73c19a85ee9de6557.jpg" alt="Battleship Game" width="300" />
 </div>
 
 ## Project Description 
