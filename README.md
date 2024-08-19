@@ -56,13 +56,13 @@ It handles all user interactions, including presenting boards, receiving coordin
 1. Clone the repository or download the code files.
 2. Navigate to the project directory.
 3. Compile the Java code using the following command:
-   ´´´sh
+   ```sh
    javac Main.java
-   ´´´
+   ```
 4. Run the application using the command:
-   ´´´sh
+   ```sh
    java Main
-   ´´´
+   ```
 5. **Follow the On-Screen Prompts:**
 
 ## Example
