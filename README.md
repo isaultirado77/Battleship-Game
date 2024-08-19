@@ -1,7 +1,7 @@
 # Battleship-Game
 
 <div align="center">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/a/ac/Hra_n%C3%A1mo%C5%99n%C3%AD_bitva_%281%29.jpg" />
+    <img src="https://upload.wikimedia.org/wikipedia/commons/a/ac/Hra_n%C3%A1mo%C5%99n%C3%AD_bitva_%281%29.jpg" width = 300 />
 </div>
 
 ## Project Description 
