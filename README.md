@@ -59,7 +59,7 @@ It handles all user interactions, including presenting boards, receiving coordin
    ```sh javac Main.java```
 4. Run the application using the command:
    ```sh java Main ```
-5. **Follow the On-Screen Prompts:**
+5. **Follow the On-Screen Prompts.**
 
 ## Example
 ```
