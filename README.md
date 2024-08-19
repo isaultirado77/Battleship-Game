@@ -1,8 +1,25 @@
 # Battleship-Game
 
 ## Project Description 
+This project is an implementation of the Battleship game, designed to be played in the console. It allows two players to place their ships on a board and take turns trying to sink the enemy fleet. The application is developed following object-oriented design principles.
 
+## Features
+1. Ship Types
+   - Aircraft Carrier
+   - Battleship
+   - Cruiser
+   - Destroyer
+   - Submarine
 
+2. Game Mechanics
+    - Placement of ships on board.
+    - Alternating turns to guess the location of enemy ships.
+    - Infication of hits, misses and sinkings.
+         
+3. Object-Oriented Design
+   - Use of classes and objects to reprecent game elements.
+   - Encapsulation of ships properties and behaviors.
+     
 ## Getting Started 
 
 
