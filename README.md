@@ -1,7 +1,7 @@
 # Battleship-Game
 
 <div align="center">
-    <img src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fcommons.wikimedia.org%2Fwiki%2FFile%3AHra_n%25C3%25A1mo%25C5%2599n%25C3%25AD_bitva_%25281%2529.jpg&psig=AOvVaw3bF4tyKhyoPaJ06E5yno4o&ust=1724171707680000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCMCi7aO-gYgDFQAAAAAdAAAAABAJ" width="300" />
+    <img src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fcommons.wikimedia.org%2Fwiki%2FFile%3AHra_n%25C3%25A1mo%25C5%2599n%25C3%25AD_bitva_%25281%2529.jpg&psig=AOvVaw3bF4tyKhyoPaJ06E5yno4o&ust=1724171707680000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCMCi7aO-gYgDFQAAAAAdAAAAABAJ" width="3000" />
 </div>
 
 ## Project Description 
