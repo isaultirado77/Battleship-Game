@@ -5,7 +5,7 @@ This project is an implementation of the Battleship game, designed to be played 
 
 ### Project Structure 
 
-The project is organized into three main packages: model, controller, and view. The model package includes the core classes and data structures, with subpackages for different ship types (ship) and game board management (table). The controller package handles the central game logic, including game flow, rule enforcement, and ship management. Finally, the view package manages user interactions by presenting game boards, receiving input, and displaying messages through the UIHandler class.
+The project is organized into three main packages: model, controller, and view. The model package includes the core classes and data structures, with subpackages for different ship types (ship) and game board management (table). The controller package handles the central game logic, including game flow, rule enforcement, and ship management. The view package manages user interactions by presenting game boards, receiving input, and displaying messages through the UIHandler class. Additionally, the Main class serves as the entry point of the game, initializing the GameController and starting the game.
 
 #### `model` package
 
