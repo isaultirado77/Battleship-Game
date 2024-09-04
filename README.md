@@ -321,4 +321,4 @@ Press Enter and pass the move to another player
 
 ## Author
 
-- Isaúl Tirado López
+- [Isaúl Tirado](https://github.com/isaultirado77)
