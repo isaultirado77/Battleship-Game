@@ -6,48 +6,6 @@
 
 ## Project Description 
 This project is an implementation of the Battleship game, designed to be played in the console. It allows two players to place their ships on a board and take turns trying to sink the enemy fleet. The application is developed following object-oriented design principles.
-
-### Project Structure 
-
-The project is organized into three main packages: model, controller, and view. The model package includes the core classes and data structures, with subpackages for different ship types (ship) and game board management (table). The controller package handles the central game logic, including game flow, rule enforcement, and ship management. The view package manages user interactions by presenting game boards, receiving input, and displaying messages through the UIHandler class. Additionally, the Main class serves as the entry point of the game, initializing the GameController and starting the game.
-
-#### `model` package
-
-The **model** package has two subpackages:
-- ***ship***: Contains the classes that represent the different types of ships in the game, all inheriting from the abstract class `Ship`.
-     - Contains classes for the game’s ships, all derived from the abstract class `Ship`, such as `AircraftCarrier`, `Battleship`, `Cruiser`, `Destroyer`, and `Submarine`.
-- ***table***: This subpackage contains the classes that manage the representation of the game board and the states of the cells.
-     - Manages the game board with classes like `BattleshipTable`, which implements the `Table` interface, `Point` for coordinates on the board, and `CellState` that defines the states of the cells.
-  
-#### `controller` package
-This package handles the core logic of the game. It includes:
-- `GameController`: Manages the main game flow, including turn and shot management.
-- `GameEngine`: Encapsulates game logic, handling rules and validations for game progression.
-- `FleetManager`: Manages each player's fleet and checks the status of the ships.
-- `CoordinateParser`: Converts text coordinates into Point objects for use on the board.
-- `ShipBuilder`: Constructs and validates ship positions based on entered coordinates.
-  
-#### `view` package
-It handles all user interactions, including presenting boards, receiving coordinates, and displaying important messages during the game. It includes: 
-- `UIHandler`: Manages the user interface and player interactions.
-
-## Features
-
-1. Ship Types
-   - Aircraft Carrier
-   - Battleship
-   - Cruiser
-   - Destroyer
-   - Submarine
-
-2. Game Mechanics
-    - Placement of ships on board.
-    - Alternating turns to guess the location of enemy ships.
-    - Infication of hits, misses and sinkings.
-         
-3. Object-Oriented Design
-   - Use of classes and objects to reprecent game elements.
-   - Encapsulation of ships properties and behaviors.
      
 ## Getting Started 
 
@@ -318,6 +276,47 @@ You hit a ship!
 Press Enter and pass the move to another player
 ...
 ```
+### Project Structure 
+
+The project is organized into three main packages: model, controller, and view. The model package includes the core classes and data structures, with subpackages for different ship types (ship) and game board management (table). The controller package handles the central game logic, including game flow, rule enforcement, and ship management. The view package manages user interactions by presenting game boards, receiving input, and displaying messages through the UIHandler class. Additionally, the Main class serves as the entry point of the game, initializing the GameController and starting the game.
+
+#### `model` package
+
+The **model** package has two subpackages:
+- ***ship***: Contains the classes that represent the different types of ships in the game, all inheriting from the abstract class `Ship`.
+     - Contains classes for the game’s ships, all derived from the abstract class `Ship`, such as `AircraftCarrier`, `Battleship`, `Cruiser`, `Destroyer`, and `Submarine`.
+- ***table***: This subpackage contains the classes that manage the representation of the game board and the states of the cells.
+     - Manages the game board with classes like `BattleshipTable`, which implements the `Table` interface, `Point` for coordinates on the board, and `CellState` that defines the states of the cells.
+  
+#### `controller` package
+This package handles the core logic of the game. It includes:
+- `GameController`: Manages the main game flow, including turn and shot management.
+- `GameEngine`: Encapsulates game logic, handling rules and validations for game progression.
+- `FleetManager`: Manages each player's fleet and checks the status of the ships.
+- `CoordinateParser`: Converts text coordinates into Point objects for use on the board.
+- `ShipBuilder`: Constructs and validates ship positions based on entered coordinates.
+  
+#### `view` package
+It handles all user interactions, including presenting boards, receiving coordinates, and displaying important messages during the game. It includes: 
+- `UIHandler`: Manages the user interface and player interactions.
+
+## Features
+
+1. Ship Types
+   - Aircraft Carrier
+   - Battleship
+   - Cruiser
+   - Destroyer
+   - Submarine
+
+2. Game Mechanics
+    - Placement of ships on board.
+    - Alternating turns to guess the location of enemy ships.
+    - Infication of hits, misses and sinkings.
+         
+3. Object-Oriented Design
+   - Use of classes and objects to reprecent game elements.
+   - Encapsulation of ships properties and behaviors.
 
 ## Author
 
