@@ -17,11 +17,18 @@ This project is an implementation of the Battleship game, designed to be played 
 
 1. Clone the repository or download the code files.
 2. Navigate to the project directory.
-3. Compile the Java code using the following command:
-   ```sh javac Main.java```
-4. Run the application using the command:
-   ```sh java Main ```
-5. **Follow the On-Screen Prompts.**
+   ```sh
+   cd .\Battleship-Game-main\
+   ```
+4. Compile the Java code using the following command:
+   ```sh
+   javac .\battleship\Main.java
+   ```
+6. Run the application using the command:
+   ```sh
+    java battleship.Main
+    ```
+8. **Follow the On-Screen Prompts.**
 
 ## Example
 ```
